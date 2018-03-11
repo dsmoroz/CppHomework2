@@ -70,7 +70,7 @@ static void filterByFirstByteAndOutput( const std::vector< uint64 >& ips )
 static void filterByFirstAndSecondByteAndOutput( const std::vector< uint64 >& ips )
 {
     std::for_each( ips.begin(), ips.end(),
-        []( auto& ip )
+        []( uint64 ip )
         {
             if( ( ip >> 24 ) == 0x2E && ( ( ip >> 16 ) & 0xFF ) == 0x46 )
             {
@@ -82,7 +82,7 @@ static void filterByFirstAndSecondByteAndOutput( const std::vector< uint64 >& ip
 
 static void filterByAnyByteAndOutput( const std::vector< uint64 >& ips )
 {
-    auto filter = []( auto& ip )
+    auto filter = []( uint64& ip )
     {
         for( int i = ipPartsNumber - 1; i >= 0; --i )
         {
