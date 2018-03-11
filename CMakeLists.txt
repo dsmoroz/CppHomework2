@@ -10,8 +10,6 @@ set_target_properties(ip_filter_cli PROPERTIES
   COMPILE_OPTIONS -Wpedantic -Wall -Wextra
 )
 
-target_link_libraries(ip_filter_cli ip_filter)
-
 install(TARGETS ip_filter_cli RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
