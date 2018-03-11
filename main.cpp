@@ -3,8 +3,6 @@
 /// @author   Daria Moroz
 /// @date     10-Mar-2018
 
-#include "stdafx.h"
-
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
