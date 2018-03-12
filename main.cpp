@@ -14,14 +14,14 @@
 static const char* ipDelimiter = ".";
 static const int ipPartsNumber = 4;
 
-typedef unsigned long uint64;
+typedef unsigned int uint32;
 
-static uint64 formatIp( const std::string& str )
+static uint32 formatIp( const std::string& str )
 {
     std::string::size_type start = 0;
     std::string::size_type stop = str.find_first_of( ipDelimiter );
 
-    uint64 ip = 0;
+    uint32 ip = 0;
     for( int i = ipPartsNumber - 1; i >= 0; --i )
     {
         ip += stoi( str.substr( start, stop - start ) ) << i * 8;
@@ -33,7 +33,7 @@ static uint64 formatIp( const std::string& str )
     return ip;
 }
 
-static std::string toString( uint64 ip )
+static std::string toString( uint32 ip )
 {
     std::string ipString;
     for( int i = ipPartsNumber - 1; i >= 0; --i )
@@ -45,21 +45,21 @@ static std::string toString( uint64 ip )
     return ipString;
 }
 
-static void printIps( const std::vector< uint64 >& ips )
+static void printIps( const std::vector< uint32 >& ips )
 {
     std::for_each( ips.begin(), ips.end(),
-        []( uint64 ip )
+        []( uint32 ip )
         {
             std::cout << toString( ip );
         }
     );
 }
 
-static void filterByFirstByteAndOutput( const std::vector< uint64 >& ips )
+static void filterByFirstByteAndOutput( const std::vector< uint32 >& ips )
 {
-    std::vector< uint64 > filteredIps;
+    std::vector< uint32 > filteredIps;
     auto it = std::copy_if( ips.cbegin(), ips.cend(), std::back_inserter( filteredIps ),
-        []( uint64 ip )
+        []( uint32 ip )
         {
             return ( ip >> 24 ) == 0x01;
         }
@@ -67,10 +67,10 @@ static void filterByFirstByteAndOutput( const std::vector< uint64 >& ips )
     printIps( filteredIps );
 }
 
-static void filterByFirstAndSecondByteAndOutput( const std::vector< uint64 >& ips )
+static void filterByFirstAndSecondByteAndOutput( const std::vector< uint32 >& ips )
 {
     std::for_each( ips.begin(), ips.end(),
-        []( uint64 ip )
+        []( uint32 ip )
         {
             if( ( ip >> 24 ) == 0x2E && ( ( ip >> 16 ) & 0xFF ) == 0x46 )
             {
@@ -80,9 +80,9 @@ static void filterByFirstAndSecondByteAndOutput( const std::vector< uint64 >& ip
     );
 }
 
-static void filterByAnyByteAndOutput( const std::vector< uint64 >& ips )
+static void filterByAnyByteAndOutput( const std::vector< uint32 >& ips )
 {
-    auto filter = []( uint64& ip )
+    auto filter = []( uint32& ip )
     {
         for( int i = ipPartsNumber - 1; i >= 0; --i )
         {
@@ -94,7 +94,7 @@ static void filterByAnyByteAndOutput( const std::vector< uint64 >& ips )
         return false;
     };
 
-    for( uint64 ip : ips )
+    for( uint32 ip : ips )
     {
         if( filter( ip ) )
         {
@@ -107,7 +107,7 @@ int main( int argc, char const *argv[] )
 {
     try
     {
-        std::vector< uint64 > ips;
+        std::vector< uint32 > ips;
         for( std::string line; std::getline( std::cin, line ); )
         {
             ips.push_back( formatIp( line ) );
